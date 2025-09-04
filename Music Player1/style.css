@@ -1,0 +1,71 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.music-player-body {
+  background: #222;
+  padding: 20px;
+  border-radius: 15px;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+img.track-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+h2, h3, p {
+  margin: 5px 0;
+}
+
+.controls button {
+  background: #444;
+  border: none;
+  color: white;
+  font-size: 20px;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.progress-container {
+  width: 100%;
+  margin: 15px 0;
+}
+
+input[type=range] {
+  width: 100%;
+}
+
+.playlist {
+  margin-top: 15px;
+  text-align: left;
+  max-height: 120px;
+  overflow-y: auto;
+  background: #333;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.playlist div {
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.playlist div.active {
+  background: #555;
+}
