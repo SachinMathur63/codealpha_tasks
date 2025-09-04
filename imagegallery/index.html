@@ -1,0 +1,262 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Responsive Image Gallery with Filters and Lightbox
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <style>
+   /* Hover zoom effect on gallery images */
+    .gallery-image {
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .gallery-image:hover {
+      transform: scale(1.05);
+    }
+    /* Lightbox overlay */
+    #lightboxOverlay {
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    #lightboxOverlay.active {
+      display: flex;
+    }
+    #lightboxContent {
+      max-width: 90vw;
+      max-height: 90vh;
+      position: relative;
+    }
+    #lightboxContent img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.7);
+    }
+    /* Navigation buttons inside lightbox */
+    .lightbox-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.7);
+      border: none;
+      border-radius: 9999px;
+      width: 2.5rem;
+      height: 2.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+    }
+    .lightbox-btn:hover {
+      background-color: rgba(255, 255, 255, 1);
+    }
+    #prevBtn {
+      left: -3.5rem;
+    }
+    #nextBtn {
+      right: -3.5rem;
+    }
+    /* Close button */
+    #closeBtn {
+      position: absolute;
+      top: -3rem;
+      right: 0;
+      background-color: rgba(255, 255, 255, 0.7);
+      border: none;
+      border-radius: 9999px;
+      width: 2.5rem;
+      height: 2.5rem;
+      cursor: pointer;
+      font-size: 1.25rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+    }
+    #closeBtn:hover {
+      background-color: rgba(255, 255, 255, 1);
+    }
+  </style>
+ </head>
+ <body class="bg-gray-100 min-h-screen flex flex-col items-center p-4">
+  <h1 class="text-3xl font-bold mb-6">
+   Responsive Image Gallery
+  </h1>
+  <!-- Filter Buttons -->
+  <div class="flex flex-wrap justify-center gap-3 mb-8 max-w-xl">
+   <button class="filter-btn bg-blue-500 text-white px-4 py-1 rounded-full text-sm hover:bg-blue-600 transition" data-filter="all">
+    All
+   </button>
+   <button class="filter-btn border border-gray-400 text-gray-700 px-4 py-1 rounded-full text-sm hover:bg-gray-200 transition" data-filter="nature">
+    Nature
+   </button>
+   <button class="filter-btn border border-gray-400 text-gray-700 px-4 py-1 rounded-full text-sm hover:bg-gray-200 transition" data-filter="city">
+    City
+   </button>
+   <button class="filter-btn border border-gray-400 text-gray-700 px-4 py-1 rounded-full text-sm hover:bg-gray-200 transition" data-filter="animals">
+    Animals
+   </button>
+  </div>
+  <!-- Gallery Grid -->
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-7xl w-full" id="gallery">
+   <img alt="Nature 1" class="gallery-image rounded-lg shadow cursor-pointer" data-category="nature" height="400" src="https://storage.googleapis.com/a1aa/image/3071ae26-82c4-40b1-fe7a-5dbcc9821c9e.jpg" width="600"/>
+   <img alt="City 1" class="gallery-image rounded-lg shadow cursor-pointer" data-category="city" height="400" src="https://storage.googleapis.com/a1aa/image/967449fe-ec56-40c5-4e50-d4bb89ff6e96.jpg" width="600"/>
+   <img alt="Animals 1" class="gallery-image rounded-lg shadow cursor-pointer" data-category="animals" height="400" src="https://storage.googleapis.com/a1aa/image/83e85244-ab21-4999-ee43-644e0de5867f.jpg" width="600"/>
+   <img alt="Nature 2" class="gallery-image rounded-lg shadow cursor-pointer" data-category="nature" height="400" src="https://storage.googleapis.com/a1aa/image/f13c1914-5879-4114-700f-9ec3ca415793.jpg" width="600"/>
+   <img alt="City 2" class="gallery-image rounded-lg shadow cursor-pointer" data-category="city" height="400" src="https://storage.googleapis.com/a1aa/image/03f1126d-a783-44eb-fb85-ed93f1d78441.jpg" width="600"/>
+   <img alt="Animals 2" class="gallery-image rounded-lg shadow cursor-pointer" data-category="animals" height="400" src="https://storage.googleapis.com/a1aa/image/53a2b8bf-69ac-4a81-d434-787a1f73b253.jpg" width="600"/>
+   <img alt="Nature 3" class="gallery-image rounded-lg shadow cursor-pointer" data-category="nature" height="400" src="https://storage.googleapis.com/a1aa/image/55b9456d-4f61-4cab-8d91-c3bb445ad2ae.jpg" width="600"/>
+   <img alt="City 3" class="gallery-image rounded-lg shadow cursor-pointer" data-category="city" height="400" src="https://storage.googleapis.com/a1aa/image/aace8c76-49d6-4fa0-e8d8-65618bc33027.jpg" width="600"/>
+   <img alt="Animals 3" class="gallery-image rounded-lg shadow cursor-pointer" data-category="animals" height="400" src="https://storage.googleapis.com/a1aa/image/d1a78a69-62cf-4707-9bbe-280fda97a3af.jpg" width="600"/>
+   <img alt="Nature 4" class="gallery-image rounded-lg shadow cursor-pointer" data-category="nature" height="400" src="https://storage.googleapis.com/a1aa/image/dbb007ec-fb1d-471a-d56a-25d15080a65c.jpg" width="600"/>
+   <img alt="City 4" class="gallery-image rounded-lg shadow cursor-pointer" data-category="city" height="400" src="https://storage.googleapis.com/a1aa/image/314069dc-dc07-4b06-df20-47bd204609d6.jpg" width="600"/>
+   <img alt="Animals 4" class="gallery-image rounded-lg shadow cursor-pointer" data-category="animals" height="400" src="https://storage.googleapis.com/a1aa/image/f074ceea-aba6-451b-f5f2-650b2a784da1.jpg" width="600"/>
+  </div>
+  <!-- Lightbox Overlay -->
+  <div aria-label="Image preview" aria-modal="true" id="lightboxOverlay" role="dialog">
+   <div class="relative" id="lightboxContent">
+    <button aria-label="Close lightbox" id="closeBtn">
+     ×
+    </button>
+    <button aria-label="Previous image" class="lightbox-btn" id="prevBtn">
+     <svg class="h-5 w-5 text-gray-800" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round">
+      </path>
+     </svg>
+    </button>
+    <img alt="" class="rounded-lg" id="lightboxImage" src=""/>
+    <button aria-label="Next image" class="lightbox-btn" id="nextBtn">
+     <svg class="h-5 w-5 text-gray-800" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round">
+      </path>
+     </svg>
+    </button>
+   </div>
+  </div>
+  <script>
+   (() => {
+      const gallery = document.getElementById("gallery");
+      const lightboxOverlay = document.getElementById("lightboxOverlay");
+      const lightboxImage = document.getElementById("lightboxImage");
+      const closeBtn = document.getElementById("closeBtn");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const filterButtons = document.querySelectorAll(".filter-btn");
+      const images = Array.from(gallery.querySelectorAll("img.gallery-image"));
+
+      let currentIndex = 0;
+      let filteredImages = images;
+
+      // Open lightbox with selected image
+      function openLightbox(index) {
+        currentIndex = index;
+        const img = filteredImages[currentIndex];
+        lightboxImage.src = img.src;
+        lightboxImage.alt = img.alt;
+        lightboxOverlay.classList.add("active");
+        document.body.style.overflow = "hidden"; // Prevent background scroll
+      }
+
+      // Close lightbox
+      function closeLightbox() {
+        lightboxOverlay.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      // Show previous image
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + filteredImages.length) % filteredImages.length;
+        openLightbox(currentIndex);
+      }
+
+      // Show next image
+      function showNext() {
+        currentIndex = (currentIndex + 1) % filteredImages.length;
+        openLightbox(currentIndex);
+      }
+
+      // Click on gallery image to open lightbox
+      images.forEach((img, index) => {
+        img.addEventListener("click", () => {
+          // Find index in filteredImages
+          const filteredIndex = filteredImages.indexOf(img);
+          if (filteredIndex !== -1) {
+            openLightbox(filteredIndex);
+          }
+        });
+      });
+
+      // Close lightbox on overlay click (but not on image or buttons)
+      lightboxOverlay.addEventListener("click", (e) => {
+        if (e.target === lightboxOverlay) {
+          closeLightbox();
+        }
+      });
+
+      closeBtn.addEventListener("click", closeLightbox);
+      prevBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        showPrev();
+      });
+      nextBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        showNext();
+      });
+
+      // Keyboard navigation for lightbox
+      document.addEventListener("keydown", (e) => {
+        if (!lightboxOverlay.classList.contains("active")) return;
+        if (e.key === "ArrowLeft") {
+          showPrev();
+        } else if (e.key === "ArrowRight") {
+          showNext();
+        } else if (e.key === "Escape") {
+          closeLightbox();
+        }
+      });
+
+      // Filter gallery images by category
+      filterButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const filter = btn.getAttribute("data-filter");
+          // Update button styles
+          filterButtons.forEach((b) => {
+            b.classList.remove("bg-blue-500", "text-white");
+            b.classList.add("border", "border-gray-400", "text-gray-700");
+          });
+          btn.classList.add("bg-blue-500", "text-white");
+          btn.classList.remove("border", "border-gray-400", "text-gray-700");
+
+          if (filter === "all") {
+            filteredImages = images;
+            images.forEach((img) => (img.style.display = ""));
+          } else {
+            filteredImages = images.filter(
+              (img) => img.dataset.category === filter
+            );
+            images.forEach((img) => {
+              img.style.display = img.dataset.category === filter ? "" : "none";
+            });
+          }
+          // Close lightbox if open
+          closeLightbox();
+        });
+      });
+    })();
+  </script>
+ </body>
+</html>
